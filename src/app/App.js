@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import './App.css';
 import AnimalForm from "../animalsForm/AnimalsForm";
+import {Alert} from 'reactstrap';
 
 class App extends Component {
     state = {
         animalType: 'shibes',
         numberOfPhotos: '1',
-        photos: []
+        photos: [],
+        error: false
     };
 
     handleChange = (e) => {
@@ -15,7 +17,15 @@ class App extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log('form submit');
+        const corsApiUrl = 'https://cors-anywhere.herokuapp.com/';
+        const photosUrl = 'http://shibe.online/api/';
+        const apiUrl = corsApiUrl + photosUrl;
+        const animalType = this.state.animalType;
+        const numberOfPhotos = this.state.numberOfPhotos;
+        fetch(`${apiUrl}${animalType}?count=${numberOfPhotos}`)
+            .then(response => response.json())
+            .then(photos => this.setState({photos}))
+            .catch(error => this.setState({error: true}));
     };
 
     render() {
@@ -28,6 +38,19 @@ class App extends Component {
                             animalType={this.state.animalType}
                             numberOfPhotos={this.state.numberOfPhotos}
                 />
+                {this.state.photos.map(
+                    (photo, index) =>
+                        <img src={photo}
+                             alt="Animal"
+                             className="img-thumbnail"
+                             key={index}
+                        />
+                )}
+                {this.state.error ?
+                    <Alert color="danger">
+                        There was an error when trying to fetch animals photos. Please try again.
+                    </Alert> :
+                    null}
             </div>
         );
     }
