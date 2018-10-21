@@ -42,7 +42,10 @@ class AnimalForm extends React.Component {
                     <Button color="primary"
                             size="lg"
                             disabled={this.props.pending}>
-                        Submit
+                        {this.props.pending ?
+                            'Loading images...' :
+                            'Submit'
+                        }
                     </Button>
                 </div>
             </Form>
