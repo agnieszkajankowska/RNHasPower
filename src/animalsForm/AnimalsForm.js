@@ -30,8 +30,7 @@ class AnimalForm extends React.Component {
                                name="animalType"
                                id="animal-type"
                                value={this.props.animalType}
-                               onChange={this.props.handleChange}
-                        >
+                               onChange={this.props.handleChange}>
                             <option value="shibes">shibes</option>
                             <option value="cats">cats</option>
                             <option value="birds">birds</option>
@@ -40,7 +39,11 @@ class AnimalForm extends React.Component {
                     </Col>
                 </FormGroup>
                 <div className="text-center">
-                    <Button color="primary" size="lg">Submit</Button>
+                    <Button color="primary"
+                            size="lg"
+                            disabled={this.props.pending}>
+                        Submit
+                    </Button>
                 </div>
             </Form>
         )

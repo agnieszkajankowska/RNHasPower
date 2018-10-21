@@ -8,7 +8,8 @@ class App extends Component {
         animalType: 'shibes',
         numberOfPhotos: '1',
         photos: [],
-        error: false
+        error: false,
+        pending: false
     };
 
     handleChange = (e) => {
@@ -22,10 +23,19 @@ class App extends Component {
         const apiUrl = corsApiUrl + photosUrl;
         const animalType = this.state.animalType;
         const numberOfPhotos = this.state.numberOfPhotos;
+        this.setState({...this.state, pending: true});
         fetch(`${apiUrl}${animalType}?count=${numberOfPhotos}`)
             .then(response => response.json())
-            .then(photos => this.setState({photos}))
-            .catch(error => this.setState({error: true}));
+            .then(photos => this.setState({
+                ...this.state,
+                photos,
+                pending: false
+            }))
+            .catch(error => this.setState({
+                ...this.state,
+                error: true,
+                pending: false
+            }));
     };
 
     render() {
@@ -37,15 +47,18 @@ class App extends Component {
                             handleChange={this.handleChange}
                             animalType={this.state.animalType}
                             numberOfPhotos={this.state.numberOfPhotos}
+                            pending={this.state.pending}
                 />
-                {this.state.photos.map(
-                    (photo, index) =>
-                        <img src={photo}
-                             alt="Animal"
-                             className="img-thumbnail"
-                             key={index}
-                        />
-                )}
+                {this.state.pending ?
+                    <div className="lds-dual-ring"/> :
+                    this.state.photos.map(
+                        (photo, index) =>
+                            <img src={photo}
+                                 alt="Animal"
+                                 className="img-thumbnail"
+                                 key={index}
+                            />
+                    )}
                 {this.state.error ?
                     <Alert color="danger">
                         There was an error when trying to fetch animals photos. Please try again.
