@@ -4,18 +4,20 @@ import {Form, FormGroup, Label, Input, Col, Button} from 'reactstrap';
 class AnimalForm extends React.Component {
     render() {
         return (
-            <Form>
+            <Form onSubmit={this.props.handleSubmit}>
                 <FormGroup row>
                     <Label for="number-of-photos" sm={4}>
                         How many animal photos you want to see?
                     </Label>
                     <Col sm={8}>
                         <Input type="number"
-                               name="number-of-photos"
+                               name="numberOfPhotos"
                                id="number-of-photos"
                                min={1}
                                max={10}
                                placeholder="Enter number between 1 and 10"
+                               value={this.props.numberOfPhotos}
+                               onChange={this.props.handleChange}
                         />
                     </Col>
                 </FormGroup>
@@ -24,7 +26,12 @@ class AnimalForm extends React.Component {
                         Choose animal type
                     </Label>
                     <Col sm={8}>
-                        <Input type="select" name="animal-type" id="animal-type">
+                        <Input type="select"
+                               name="animalType"
+                               id="animal-type"
+                               value={this.props.animalType}
+                               onChange={this.props.handleChange}
+                        >
                             <option value="shibes">shibes</option>
                             <option value="cats">cats</option>
                             <option value="birds">birds</option>
