@@ -2,10 +2,13 @@ import React, {Component} from 'react';
 import './App.css';
 import AnimalForm from "../animalsForm/AnimalsForm";
 import {Alert} from 'reactstrap';
+import {animalTypes, apiUrl} from "../constants";
+import {getRandomInt} from "../helpers";
 
 class App extends Component {
     state = {
-        animalType: 'shibes',
+        animalType: animalTypes[0],
+        animalTypes: animalTypes,
         numberOfPhotos: '1',
         photos: [],
         error: false,
@@ -18,10 +21,8 @@ class App extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const corsApiUrl = 'https://cors-anywhere.herokuapp.com/';
-        const photosUrl = 'http://shibe.online/api/';
-        const apiUrl = corsApiUrl + photosUrl;
-        const animalType = this.state.animalType;
+        const animalType = this.state.animalType === 'random' ?
+            this.state.animalTypes[getRandomInt()] : this.state.animalType;
         const numberOfPhotos = this.state.numberOfPhotos;
         this.setState({...this.state, pending: true});
         fetch(`${apiUrl}${animalType}?count=${numberOfPhotos}`)
@@ -45,25 +46,25 @@ class App extends Component {
                 <h2 className="text-center">Choose Animal</h2>
                 <AnimalForm handleSubmit={this.handleSubmit}
                             handleChange={this.handleChange}
-                            animalType={this.state.animalType}
+                            animalTypes={this.state.animalTypes}
                             numberOfPhotos={this.state.numberOfPhotos}
                             pending={this.state.pending}
                 />
                 {this.state.pending ?
                     <div className="lds-dual-ring"/> :
-                    this.state.photos.map(
-                        (photo, index) =>
-                            <img src={photo}
-                                 alt="Animal"
-                                 className="img-thumbnail"
-                                 key={index}
-                            />
+                    (this.state.error ?
+                            <Alert color="danger">
+                                There was an error when trying to fetch animals photos. Please try again.
+                            </Alert> :
+                            this.state.photos.map(
+                                (photo, index) =>
+                                    <img src={photo}
+                                         alt="Animal"
+                                         className="img-thumbnail"
+                                         key={index}
+                                    />
+                            )
                     )}
-                {this.state.error ?
-                    <Alert color="danger">
-                        There was an error when trying to fetch animals photos. Please try again.
-                    </Alert> :
-                    null}
             </div>
         );
     }

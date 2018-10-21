@@ -31,10 +31,12 @@ class AnimalForm extends React.Component {
                                id="animal-type"
                                value={this.props.animalType}
                                onChange={this.props.handleChange}>
-                            <option value="shibes">shibes</option>
-                            <option value="cats">cats</option>
-                            <option value="birds">birds</option>
-                            <option value="random">random</option>
+                            {this.props.animalTypes.map(type =>
+                                <option key={type}
+                                        value={type}>
+                                {type}
+                                </option>
+                            )}
                         </Input>
                     </Col>
                 </FormGroup>
