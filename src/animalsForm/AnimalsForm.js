@@ -34,7 +34,7 @@ class AnimalForm extends React.Component {
                             {this.props.animalTypes.map(type =>
                                 <option key={type}
                                         value={type}>
-                                {type}
+                                    {type}
                                 </option>
                             )}
                         </Input>

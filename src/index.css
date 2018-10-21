@@ -6,6 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: aliceblue;
 }
 
 code {
@@ -15,4 +16,8 @@ code {
 
 .btn-primary.disabled, .btn-primary:disabled {
   background-color: grey;
+}
+
+div.alert {
+  margin-top: 20px;
 }
